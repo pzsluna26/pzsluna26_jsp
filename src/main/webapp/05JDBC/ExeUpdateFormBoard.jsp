@@ -27,7 +27,7 @@
 						<select name ="id" >
 						<% 
 							JDBConnect jdbc = new JDBConnect();
-							String sql = "SELECT id from memver";
+							String sql = "SELECT id from member";
 							Statement stmt = jdbc.getCon().createStatement();
 							ResultSet rs = stmt.executeQuery(sql);
 							

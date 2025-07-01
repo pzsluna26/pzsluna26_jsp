@@ -9,7 +9,9 @@ import java.sql.Statement;
 import jakarta.servlet.ServletContext;
 
 public class JDBConnect {
-    private Connection con;
+    public Connection con;
+   
+    public ResultSet rs;
     public Connection getCon() {
 		return con;
 	}
