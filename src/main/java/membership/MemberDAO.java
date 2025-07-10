@@ -14,7 +14,7 @@ public class MemberDAO extends JDBConnect {
         String query = "SELECT * FROM member WHERE id=? AND pass=?";
 
         try {
-            psmt = con.prepareStatement(query);
+            psmt = getCon().prepareStatement(query);
             psmt.setString(1, uid);
             psmt.setString(2, upass); // 오타 수정
 

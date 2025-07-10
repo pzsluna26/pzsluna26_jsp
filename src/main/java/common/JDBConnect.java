@@ -10,12 +10,13 @@ import jakarta.servlet.ServletContext;
 
 public class JDBConnect {
     private Connection con;
-   
-//    public ResultSet rs;
+    public ResultSet rs;
+    public PreparedStatement psmt;
+    
     public Connection getCon() {
 		return con;
 	}
-	public PreparedStatement psmt;
+	
     
     // 기본 생성자
     public JDBConnect() {

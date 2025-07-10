@@ -1,8 +1,14 @@
+<%@page import="model1.board.BoardDTO"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
+<%@page import="model1.board.BoardDAO"%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
 //DAO를 생성해 DB에 연결
-BoardDAO dao = new BoardDAO(application)
+BoardDAO dao = new BoardDAO(application);
 
 //사용자가 입력한 검색 조건을 Map에 저장
 Map<String, Object> param = new HashMap<String, Object>();
@@ -17,7 +23,7 @@ if (searchWord != null){
 int totalCount = dao.selectCount(param); 
 
 //게시물 목록 받기
-List<BoardDTO> boardLists = dao.selectList(parma);
+List<BoardDTO> boardLists = dao.selectList(param);
 
 //DB연결 닫기
 dao.close();
@@ -39,6 +45,8 @@ dao.close();
 				<option value="title">제목</option>
 				<option value="content">내용</option>
 			</select>
+			<input type="txet" name="searchWord" >
+			<input type="submit" value="검색하기" >
 		</td>
 	</tr>
 	</table>
@@ -79,9 +87,20 @@ else {
 		<td align="center"><%= dto.getVisitcount() %></td>
 		<td align="center"><%= dto.getPostdate() %></td>
 	</tr>
+<% 
 		}
 }
-		
+%>
 	</table>
+	<table border="1" width="90%">
+		<tr align="right">
+			<td>
+				<button type="button" onclick="location.href='Write.jsp';">
+					글쓰기
+				</button>
+			</td>
+		</tr>
+	</table>
+
 </body>
 </html>
