@@ -100,6 +100,57 @@ public class BoardDAO extends JDBConnect {
         return bbs;
     }
     
+    //검색 조건에 맞는 게시물 목록을 반환합니다(페이징 기능 지원)
+    public List<BoardDTO> selectListPage(Map<String, Object> map){
+    	// 결과(게시물 목록)를 담을 변수
+    	List<BoardDTO> bbs = new Vector<BoardDTO>();
+    	
+    	//쿼리문 템플릿
+    	String query = "SELECT * FROM( "
+    				 + "	SELECT Tb.*, ROWNUM rNum FROM ( "
+    				 + "		SELECT * FROM board ";
+    	//검색 조건 추가
+    	if (map.get("searchWord") != null) {
+    		query += " WHERE" + map.get("searchField")
+    			  + " LIKE '%" + map.get("searchWord") + "%' ";
+    	}
+    	query += "		ORDER BY num DESC"
+    		  + "		) Tb "
+    		  + " ) "
+    		  + " WHERE rNum BETWEEN ? AND ?";
+    	try {
+    		//쿼리문 완성
+    		psmt = getCon().prepareStatement(query);
+    		psmt.setString(1, map.get("start").toString());
+    		psmt.setString(2, map.get("end").toString());
+    		
+    		//쿼리문 실행
+    		rs = psmt.executeQuery();
+    		
+    		while(rs.next()) {
+    			//한행 (게시물 하나)의 데이터를 DTO에 저장
+    			BoardDTO dto = new BoardDTO();
+    			dto.setNum(rs.getString("num"));
+    			dto.setTitle(rs.getString("title"));
+    			dto.setContent(rs.getString("content"));
+    			dto.setPostdate(rs.getDate("postdate"));
+    			dto.setId(rs.getString("id"));
+    			dto.setVisitcount(rs.getString("visitcount"));
+    			
+    			//반환할 결과 목록에 게시물 추가
+    			bbs.add(dto);
+    		}
+    	}
+    	catch(Exception e) {
+    		System.out.println("게시물 조회 중 예외 발생");
+    		e.printStackTrace();
+    	}
+    	
+    	//목록반환
+    	return bbs;
+    }
+    
+    
     // 게시글 데이터를 받아 DB에 추가합니다.
     public int insertWrite(BoardDTO dto) {
         int result = 0;
@@ -159,13 +210,12 @@ public class BoardDAO extends JDBConnect {
     // 지정한 게시물의 조회수를 1 증가 시킵니다.
     public void updateVisitCount(String num) {
     	// 쿼리문 준비
-    	String query ="UPDATE board SET"
-    				 +"visitcount=cisitcount+1"
-    				 +"WHERE num=?";
+    	String query ="UPDATE board SET visitcount = visitcount +1 " + 
+    				"WHERE num =?";
     	try {
     		psmt = getCon().prepareStatement(query);
     		psmt.setString(1,num);
-    		psmt.executeQuery();
+    		psmt.executeUpdate();
     	}
     	catch(Exception e) {
     		System.out.println("게시물 조회수 증가 중 예외 발생");
@@ -178,8 +228,8 @@ public class BoardDAO extends JDBConnect {
     	int result = 0;
     	try {
     		// 쿼리문 템플릿
-    		String query = "UPDATE board SET"
-    					 + "title = ? , content = ?" 
+    		String query = "UPDATE board SET "
+    					 + "title = ? , content = ? " 
     					 + "WHERE num = ?";
     		
     		// 쿼리문 완성
@@ -196,5 +246,46 @@ public class BoardDAO extends JDBConnect {
     		e.printStackTrace();
     	}
     	return result;
+    }
+    
+    // 지정한 게시물을 삭제합니다.
+    public int deletePost(BoardDTO dto) {
+    	int result = 0;
+    	try {
+    		// 쿼리 문 템플릿
+    		String query = "DELETE FROM board WHERE num=?";
+    		
+    		// 쿼리문 완성
+    		psmt = getCon().prepareStatement(query);
+    		psmt.setString(1,  dto.getNum());
+    		
+    		// 쿼리문 실행
+    		result = psmt.executeUpdate();
+    	}
+    	catch(Exception e) {
+    		System.out.println("게시물 삭제 중 예외 발생");
+    		e.printStackTrace();
+    	}
+    	// 결과 반환
+    	return result;
+    }
+    
+    public static void main(String[] args) {
+        // 테스트용 DTO 객체 생성
+        BoardDTO dto = new BoardDTO();
+        dto.setNum("3"); // 삭제할 게시물 번호 입력 (기존 DB에 존재하는 num)
+
+        // BoardDAO 객체 생성 (ServletContext 없이 JDBConnect에 기본 생성자가 있어야 함)
+        BoardDAO dao = new BoardDAO(null); // getCon()이 기본 연결 사용하도록 구현돼야 함
+
+        int result = dao.deletePost(dto);
+
+        if (result > 0) {
+            System.out.println("삭제 성공!");
+        } else {
+            System.out.println("삭제 실패. 해당 번호의 게시물이 없거나 DB 오류.");
+        }
+
+        dao.close(); // 연결 닫기
     }
 }
