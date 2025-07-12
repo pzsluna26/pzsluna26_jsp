@@ -24,11 +24,12 @@ if (searchWord != null){
 int totalCount = dao.selectCount(param); 
 
 
-
-
 //페이지처리 start//
 //전체페이지 수 계산
+
 int pageSize= Integer.parseInt(application.getInitParameter("POSTS_PER_PAGE"));
+ 
+/* int pageSize = 10;  */
 int blockPage = Integer.parseInt(application.getInitParameter("PAGES_PER_BLOCK"));
 int totalPage = (int)Math.ceil((double)totalCount / pageSize); //전체 페이지 수
 
@@ -40,15 +41,14 @@ if (pageTemp != null && !pageTemp.equals("")) {
 } //요청 받은 페이지로 수정
 
 //목록에 출력할 게시물 범위 계산
-int start = (pageNum -1) * pageSize + 1; //첫 게시물 번호
-int end = pageNum * pageSize; //마지막 게시물 번호
+int start = (pageNum -1) * pageSize; //첫 게시물 번호
 param.put("start", start);
 param.put("pageSize", pageSize);
 //페이지 처리 end//
 
 
 //게시물 목록 받기
-List<BoardDTO> boardLists = dao.selectList(param);
+List<BoardDTO> boardLists = dao.selectListPage(param);
 
 //DB연결 닫기
 dao.close();

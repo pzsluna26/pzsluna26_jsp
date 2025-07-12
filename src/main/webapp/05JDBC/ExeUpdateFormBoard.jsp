@@ -2,7 +2,7 @@
 <%@page import="java.sql.Statement"%>
 <%@page import="common.JDBConnect"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,34 +15,34 @@
 		<table>
 			<tr>
 				<th>title</th>
-					<td><input type ="text" name="title"></td>
+				<td><input type="text" name="title"></td>
 			</tr>
 			<tr>
 				<th>content</th>
-					<td><input type ="text" name="content"></td>
+				<td><input type="text" name="content"></td>
 			</tr>
 			<tr>
 				<th>id</th>
-					<td>
-						<select name ="id" >
-						<% 
-							JDBConnect jdbc = new JDBConnect();
-							String sql = "SELECT id from member";
-							Statement stmt = jdbc.getCon().createStatement();
-							ResultSet rs = stmt.executeQuery(sql);
-							
-							while (rs.next()) {
-						        String id = rs.getString("id");
-							}
-							rs.close();
-							stmt.close();
-						    jdbc.close();
+				<td><select name="id">
+						<%
+						JDBConnect jdbc = new JDBConnect();
+						String sql = "SELECT id FROM member";
+						Statement stmt = jdbc.getCon().createStatement();
+						ResultSet rs = stmt.executeQuery(sql);
+
+						while (rs.next()) {
+							String id = rs.getString("id");
 						%>
-						</select>
-					</td>
+						<option value="<%=id%>"><%=id%></option>
+						<%
+						}
+						rs.close();
+						stmt.close();
+						jdbc.close();
+						%>
+				</select></td>
 			</tr>
 		</table>
 		<input type="submit" value="등록">
-		
 </body>
 </html>

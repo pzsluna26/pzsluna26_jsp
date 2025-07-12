@@ -57,7 +57,7 @@ public class BoardDAO extends JDBConnect {
         Statement stmt = null;
         ResultSet rs = null;
 
-        String query = "SELECT * FROM board";
+        String query = "SELECT * FROM board ";
 
         // SQL Injection 방지를 위한 searchField 유효성 검사
         if (map.get("searchWord") != null) {
@@ -106,39 +106,34 @@ public class BoardDAO extends JDBConnect {
     	List<BoardDTO> bbs = new Vector<BoardDTO>();
     	
     	//쿼리문 템플릿
-    	String query = "SELECT * FROM( "
-    				 + "	SELECT Tb.*, ROWNUM rNum FROM ( "
-    				 + "		SELECT * FROM board ";
-    	//검색 조건 추가
-    	if (map.get("searchWord") != null) {
-    		query += " WHERE" + map.get("searchField")
+    	String query = "select * from board ";
+    	
+    	if (map.get("searchWord") != null){
+    		query += " WHERE " + map.get("searchField")
     			  + " LIKE '%" + map.get("searchWord") + "%' ";
     	}
-    	query += "		ORDER BY num DESC"
-    		  + "		) Tb "
-    		  + " ) "
-    		  + " WHERE rNum BETWEEN ? AND ?";
+    	query += " ORDER BY num DESC limit ? ,? ";
     	try {
-    		//쿼리문 완성
-    		psmt = getCon().prepareStatement(query);
-    		psmt.setString(1, map.get("start").toString());
-    		psmt.setString(2, map.get("end").toString());
+    	
+    	psmt = getCon().prepareStatement(query);
+    	psmt.setInt(1, (int)map.get("start"));
+    	psmt.setInt(2, (int)map.get("pageSize"));
     		
-    		//쿼리문 실행
-    		rs = psmt.executeQuery();
-    		
-    		while(rs.next()) {
-    			//한행 (게시물 하나)의 데이터를 DTO에 저장
-    			BoardDTO dto = new BoardDTO();
-    			dto.setNum(rs.getString("num"));
-    			dto.setTitle(rs.getString("title"));
-    			dto.setContent(rs.getString("content"));
-    			dto.setPostdate(rs.getDate("postdate"));
-    			dto.setId(rs.getString("id"));
-    			dto.setVisitcount(rs.getString("visitcount"));
-    			
-    			//반환할 결과 목록에 게시물 추가
-    			bbs.add(dto);
+		//쿼리문 실행
+		rs = psmt.executeQuery();
+		
+		while(rs.next()) {
+			//한행 (게시물 하나)의 데이터를 DTO에 저장
+			BoardDTO dto = new BoardDTO();
+			dto.setNum(rs.getString("num"));
+			dto.setTitle(rs.getString("title"));
+			dto.setContent(rs.getString("content"));
+			dto.setPostdate(rs.getDate("postdate"));
+			dto.setId(rs.getString("id"));
+			dto.setVisitcount(rs.getString("visitcount"));
+			
+			//반환할 결과 목록에 게시물 추가
+			bbs.add(dto);
     		}
     	}
     	catch(Exception e) {
@@ -153,29 +148,32 @@ public class BoardDAO extends JDBConnect {
     
     // 게시글 데이터를 받아 DB에 추가합니다.
     public int insertWrite(BoardDTO dto) {
-        int result = 0;
-        PreparedStatement psmt = null;
-        
-        try {
-        	String query = "INSERT INTO board (title, content, id, visitcount) VALUES (?, ?, ?, 0)";
-        	psmt = getCon().prepareStatement(query);
-        	psmt.setString(1, dto.getTitle());
-        	psmt.setString(2, dto.getContent());
-        	psmt.setString(3, dto.getId());
-
-        	result = psmt.executeUpdate();
-        }
-        catch(Exception e) {
-            System.out.println("게시물 입력 중 예외 발생");
-            e.printStackTrace();
-        }
-        
-        return result;
-    }
+		int result =0;
+	
+		try {
+			String query = "INSERT INTO board ( "
+						 + "title,content,id,visitcount) "
+						 + "VALUES ( "
+						 + " ?, ?, ?, 0)";
+			
+			psmt = getCon().prepareStatement(query);
+			psmt.setString(1, dto.getTitle());
+			psmt.setString(2, dto.getContent());
+			psmt.setString(3, dto.getId());
+			
+			result = psmt.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println("게시물 입력 중 예외 발생");
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
     
     // 지정한 게시물을 찾아 내용을 반환합니다.
     public BoardDTO selectView(String num) {
-    	BoardDTO dto = null;
+    	BoardDTO dto = new BoardDTO();
     	 
     	// 쿼리문 준비
     	String query = "SELECT B.*, M.name "
@@ -189,7 +187,6 @@ public class BoardDAO extends JDBConnect {
     		
     		// 결과 처리
     		if(rs.next()) {
-    			dto = new BoardDTO();
     			dto.setNum(rs.getString(1));
     			dto.setTitle(rs.getString(2));
     			dto.setContent(rs.getString("content"));
