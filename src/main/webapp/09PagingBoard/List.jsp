@@ -47,7 +47,6 @@ int start = (pageNum -1) * pageSize; //첫 게시물 번호
 System.out.print(start + ", " + end);
 
 
-int start = (pageNum -1) * pageSize; //첫 게시물 번호
 param.put("start", start);
 param.put("end", end);
 //페이지 처리 end//

@@ -101,45 +101,6 @@ public class BoardDAO extends JDBConnect {
     }
     
     //검색 조건에 맞는 게시물 목록을 반환합니다(페이징 기능 지원)
-<<<<<<< HEAD
-    public List<BoardDTO> selectListPage(Map<String, Object> map) {
-        List<BoardDTO> bbs = new ArrayList<>();
-
-        String query = "SELECT * FROM board ";
-        if (map.get("searchWord") != null) {
-            query += " WHERE " + map.get("searchField") + " "
-                  + " LIKE '%" + map.get("searchWord") + "%' ";
-        }
-        query += " ORDER BY num DESC LIMIT ?, ?";
-
-        try {
-            psmt = getCon().prepareStatement(query);
-
-            int start = (int) map.get("start");
-            int end = (int) map.get("end");
-
-            psmt.setInt(1, start - 1); // LIMIT는 0부터 시작
-            psmt.setInt(2, end - start + 1);
-
-            rs = psmt.executeQuery();
-
-            while (rs.next()) {
-                BoardDTO dto = new BoardDTO();
-                dto.setNum(rs.getString("num"));
-                dto.setTitle(rs.getString("title"));
-                dto.setContent(rs.getString("content"));
-                dto.setPostdate(rs.getDate("postdate"));
-                dto.setId(rs.getString("id"));
-                dto.setVisitcount(rs.getString("visitcount"));
-                bbs.add(dto);
-            }
-        } catch (Exception e) {
-            System.out.println("게시물 조회 중 예외 발생");
-            e.printStackTrace();
-        }
-
-        return bbs;
-=======
     public List<BoardDTO> selectListPage(Map<String, Object> map){
     	// 결과(게시물 목록)를 담을 변수
     	List<BoardDTO> bbs = new Vector<BoardDTO>();
@@ -182,9 +143,7 @@ public class BoardDAO extends JDBConnect {
     	
     	//목록반환
     	return bbs;
->>>>>>> branch 'main' of https://github.com/pzsluna26/pzsluna26_jsp.git
     }
-    
     
     // 게시글 데이터를 받아 DB에 추가합니다.
     public int insertWrite(BoardDTO dto) {
