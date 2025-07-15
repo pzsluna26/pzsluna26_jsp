@@ -13,7 +13,7 @@
 	<%
 	JDBConnect jdbc = new JDBConnect();
 	
-	String id = "test2";
+	String id = "test3";
 	String pass = "1111";
 	String name = "테스트1회원";
 	

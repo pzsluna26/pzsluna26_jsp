@@ -10,7 +10,7 @@ public class MemberDAO extends JDBConnect {
     }
 
     public MemberDTO getMemberDTO(String uid, String upass) {
-        MemberDTO dto = null;
+        MemberDTO dto = new MemberDTO();
         String query = "SELECT * FROM member WHERE id=? AND pass=?";
 
         try {
@@ -21,7 +21,7 @@ public class MemberDAO extends JDBConnect {
             rs = psmt.executeQuery();
 
             if (rs.next()) {
-                dto = new MemberDTO(); // 조건에 맞을 때만 객체 생성
+                // 조건에 맞을 때만 객체 생성
                 dto.setId(rs.getString("id"));
                 dto.setPass(rs.getString("pass"));
                 dto.setName(rs.getString("name"));        // 컬럼명 명시 권장

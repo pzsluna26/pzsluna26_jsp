@@ -17,8 +17,15 @@ dto.setId(session.getAttribute("UserId").toString());
 //DAO객체를 통해 DB에 DTO 저장
 BoardDAO dao = new BoardDAO(application);
 int iResult = dao.insertWrite(dto);
+<<<<<<< HEAD
 
 
+=======
+/* for(int i=1; i <= 100; i++){
+	dto.setTitle(title+ "-" + i);
+	iResult = dao.insertWrite(dto);
+}  */ 
+>>>>>>> branch 'main' of https://github.com/pzsluna26/pzsluna26_jsp.git
 dao.close();
 
 //성공 or 실패?

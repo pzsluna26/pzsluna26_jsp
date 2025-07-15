@@ -25,11 +25,12 @@ if (searchWord != null){
 int totalCount = dao.selectCount(param); 
 
 
-
-
 //페이지처리 start//
 //전체페이지 수 계산
+
 int pageSize= Integer.parseInt(application.getInitParameter("POSTS_PER_PAGE"));
+ 
+/* int pageSize = 10;  */
 int blockPage = Integer.parseInt(application.getInitParameter("PAGES_PER_BLOCK"));
 int totalPage = (int)Math.ceil((double)totalCount / pageSize); //전체 페이지 수
 
@@ -46,6 +47,7 @@ int start = (pageNum -1) * pageSize; //첫 게시물 번호
 System.out.print(start + ", " + end);
 
 
+int start = (pageNum -1) * pageSize; //첫 게시물 번호
 param.put("start", start);
 param.put("end", end);
 //페이지 처리 end//
