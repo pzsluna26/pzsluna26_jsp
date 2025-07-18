@@ -61,7 +61,7 @@
   	<servlet-name>MemberAuth</servlet-name>
   	<url-pattern>/12Servlet/MemberAuth.mvc</url-pattern>
   </servlet-mapping>
-<<<<<<< HEAD
+
   <servlet>
   	<servlet-name>MVCBoardList</servlet-name>
   	<servlet-class>model2.mvcboard.ListController</servlet-class>
@@ -83,6 +83,5 @@
   	<url-pattern>/mvcboard/write.do</url-pattern>
   </servlet-mapping>
 </web-app>
-=======
-</web-app>
->>>>>>> 21450d5cbe468780ec144cb3c9722324436c7a05
+
+

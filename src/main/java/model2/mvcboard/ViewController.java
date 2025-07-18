@@ -5,10 +5,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+//webservlet => jsp에 전달하는 컨트롤러 
+@WebServlet("/mvcboard/view.do")
 public class ViewController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	@Override
