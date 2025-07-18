@@ -99,8 +99,9 @@ public class BoardDAO extends JDBConnect {
 
         return bbs;
     }
-    
-  //검색조건에 맞는 게시물 목록을 반환합니다(페이징 기능 지원).
+
+    //검색 조건에 맞는 게시물 목록을 반환합니다(페이징 기능 지원)
+
     public List<BoardDTO> selectListPage(Map<String, Object> map){
     	// 결과(게시물 목록)를 담을 변수
     	List<BoardDTO> bbs = new Vector<BoardDTO>();
@@ -144,7 +145,6 @@ public class BoardDAO extends JDBConnect {
     	//목록반환
     	return bbs;
     }
-    
     
     // 게시글 데이터를 받아 DB에 추가합니다.
     public int insertWrite(BoardDTO dto) {

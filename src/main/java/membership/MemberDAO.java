@@ -1,5 +1,4 @@
 package membership;
-
 import java.sql.*;
 import common.JDBConnect;
 
