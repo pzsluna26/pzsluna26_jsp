@@ -19,7 +19,7 @@ public class PassController extends HttpServlet {
 		req.setAttribute("mode", req.getParameter("mode"));
 		req.getRequestDispatcher("/14MVCBoard/pass.jsp").forward(req, resp);
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//매개변수 저장

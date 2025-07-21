@@ -11,6 +11,7 @@
 			if(form.name.value==""){
 				alert("작성자를 입력하세요.")
 				form.name.focus();
+				return false;
 			}
 			if(form.title.value == ""){
 				alert("제목을 입력하세요.");
@@ -48,7 +49,7 @@
 		<tr>
 			<td>내용</td>
 			<td>
-				<textarea type="text" name="content" style="width:90px;height:100px;">${dto.content}</textarea>
+				<textarea name="content" style="width:90px;height:100px;">${dto.content}</textarea>
 			</td>
 		</tr>
 		<tr>

@@ -27,7 +27,7 @@ public class EditController extends HttpServlet {
 		String idx = req.getParameter("idx");
 		MVCBoardDAO dao = new MVCBoardDAO();
 		MVCBoardDTO dto = dao.selectView(idx);
-		req.setAttribute("dtd", dto);
+		req.setAttribute("dto", dto);
 		req.getRequestDispatcher("/14MVCBoard/Edit.jsp").forward(req, resp);
 	}
 	@Override
@@ -97,7 +97,7 @@ public class EditController extends HttpServlet {
 			
 		}
 		else { //수정실패
-			JSFunction.alertLocation(resp, "비밀번호 검증을 다시 진행해주세요.", "..mvcboard/view.do?idx=" + idx);
+			JSFunction.alertLocation(resp, "비밀번호 검증을 다시 진행해주세요.", "../mvcboard/view.do?idx=" + idx);
 		}
 }
 }
