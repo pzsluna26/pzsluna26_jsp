@@ -44,3 +44,4 @@ public class FrontController extends HttpServlet {
 		req.setAttribute("resultValue", "<h4>자유게시판</h4>");
 	}
 }
+

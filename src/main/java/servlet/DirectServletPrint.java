@@ -25,3 +25,4 @@ public class DirectServletPrint extends HttpServlet {
 			writer.close();
 	}
 }
+

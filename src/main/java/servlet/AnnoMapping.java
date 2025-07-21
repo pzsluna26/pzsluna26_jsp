@@ -18,3 +18,4 @@ public class AnnoMapping extends HttpServlet{
 		req.getRequestDispatcher("/12Servlet/AnnoMapping.jsp").forward(req, resp);
 	}
 }
+

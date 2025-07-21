@@ -68,3 +68,4 @@ public class MemberAuth2 extends HttpServlet {
 		dao.close();
 	}
 }
+
